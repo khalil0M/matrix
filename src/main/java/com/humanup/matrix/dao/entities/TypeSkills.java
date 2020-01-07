@@ -1,59 +1,29 @@
 package com.humanup.matrix.dao.entities;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString(of= {"typeId","titleSkill","skillList"})
 @Entity
 @Table(name = "type_skills")
-public class TypeSkills {
-
+public class TypeSkills implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long typeId;
-	private String titleSkill;
+	@Column(name="type_id")
+	 Long typeId;
+	@Column(name="title_skill")
+	 String titleSkill;
 
-	@OneToMany(mappedBy="typeSkills",fetch=FetchType.LAZY)
-	private List<Skill> skillList;
-
-	protected TypeSkills() {
-	}
-
-	public TypeSkills(String titleSkill) {
-		this.titleSkill = titleSkill;
-	}
-
-	@Override
-	public String toString() {
-		return "TypeSkills [typeId=" + typeId + ", titleSkill=" + titleSkill + "]";
-	}
-
-	public Long getTypeId() {
-		return typeId;
-	}
-
-	public String getTitleSkill() {
-		return titleSkill;
-	}
-
-	public List<Skill> getSkillList() {
-		return skillList;
-	}
-
-
-	public static class Builder {
-
-		private String titleSkill;
-
-		public Builder() {
-		}
-
-		public Builder setTitleSkill(String titleSkill) {
-			this.titleSkill = titleSkill;
-			return this;
-		}
-		public TypeSkills build(){
-			return new TypeSkills(titleSkill);
-		}
-	}
-
+	@OneToMany(mappedBy="typeSkills",fetch=FetchType.EAGER)
+	 List<Skill> skillList;
 }

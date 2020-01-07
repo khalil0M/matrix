@@ -26,10 +26,10 @@ public class TypeSkillsBSImpl implements TypeSkillsBS {
 	private TypeSkillsDAO typeSkillsDAO;
 
 	@Override
-	@Transactional
+	@Transactional(transactionManager="transactionManagerWrite")
 	public boolean createTypeSkills(TypeSkillsVO typeSkillsVO) {
-		TypeSkills typeToSave = new TypeSkills.Builder()
-				.setTitleSkill(typeSkillsVO.getTitleSkill())
+		TypeSkills typeToSave =  TypeSkills.builder()
+				.titleSkill(typeSkillsVO.getTitleSkill())
 				.build();
 		return typeSkillsDAO.save(typeToSave) != null;
 
@@ -39,7 +39,16 @@ public class TypeSkillsBSImpl implements TypeSkillsBS {
 	public TypeSkillsVO findByTypeSkillsTitle(String titleSkill) {
 		Optional<TypeSkills> typeSkillsFinded = Optional.ofNullable(typeSkillsDAO.findByTitleSkill(titleSkill));
 		if (typeSkillsFinded.isPresent()) {
-			return new TypeSkillsVO.Builder().setTitleSkill(typeSkillsFinded.get().getTitleSkill()).build();
+			return  TypeSkillsVO.builder().titleSkill(typeSkillsFinded.get().getTitleSkill()).build();
+		}
+		return null;
+	}
+
+	@Override
+	public TypeSkillsVO findByTypeSkillsByID(Long id) {
+		Optional<TypeSkills> typeSkillsFinded = Optional.ofNullable(typeSkillsDAO.findByTypeId(id));
+		if (typeSkillsFinded.isPresent()) {
+			return  TypeSkillsVO.builder().titleSkill(typeSkillsFinded.get().getTitleSkill()).build();
 		}
 		return null;
 	}
@@ -47,7 +56,7 @@ public class TypeSkillsBSImpl implements TypeSkillsBS {
 	@Override
 	public List<TypeSkillsVO> findListTypeSkills() {
 		return typeSkillsDAO.findAll().stream()
-				.map(typeSkillsFinded -> new TypeSkillsVO.Builder().setTitleSkill(typeSkillsFinded.getTitleSkill())
+				.map(typeSkillsFinded ->  TypeSkillsVO.builder().titleSkill(typeSkillsFinded.getTitleSkill())
 				.build())
 				.collect(Collectors.toList());
 	}
@@ -58,8 +67,8 @@ public class TypeSkillsBSImpl implements TypeSkillsBS {
 	        if(listTypeSkillsFinded.isPresent()) {
 	            return listTypeSkillsFinded.get()
 	                    .stream()
-	                    .map(typeSkillsFinded -> new TypeSkillsVO.Builder()
-	                    		.setTitleSkill(typeSkillsFinded.getTitleSkill())
+	                    .map(typeSkillsFinded ->  TypeSkillsVO.builder()
+	                    		.titleSkill(typeSkillsFinded.getTitleSkill())
 	                            .build())
 	                     .collect(Collectors.toList());
 	        }

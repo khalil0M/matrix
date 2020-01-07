@@ -1,78 +1,40 @@
 package com.humanup.matrix.dao.entities;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString(of= {"id","libelle","description","typeSkills","persons"})
 @Entity
-public class Skill {
-
+@Table(name = "skill")
+public class Skill implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String libelle;
-	private String description;
+	 Long id;
+	@Column(name="libelle")
+	 String libelle;
+	@Column(name="description")
+	 String description;
 
 	@ManyToOne
-	@JoinColumn(name = "typeId")
-	private TypeSkills typeSkills;
+	@JoinColumn(name = "type_id")
+	TypeSkills typeSkills;
 
-	protected Skill() {
-	}
-
-	public Skill(String libelle, String description,TypeSkills typeSkills) {
-		this.libelle = libelle;
-		this.description = description;
-		this.typeSkills = typeSkills;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getLibelle() {
-		return libelle;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public TypeSkills getTypeSkills() {
-		return this.typeSkills;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("Skill[id=%d, libelle='%s', description='%s']", id, libelle, description);
-	}
-
-	public static class Builder {
-
-		private String libelle;
-		private String description;
-		private TypeSkills typeSkills;
-
-		public Builder() {
-		}
-
-		public Builder setDescription(String description) {
-			this.description = description;
-			return this;
-		}
-
-		public Builder setLibelle(String libelle) {
-			this.libelle = libelle;
-			return this;
-		}
-
-		public Builder setTypeSkills(TypeSkills typeSkills) {
-			this.typeSkills = typeSkills;
-			return this;
-		}
-
-		public Skill build() {
-			return new Skill(libelle, description,typeSkills);
-		}
-
-	}
-
+	@ManyToMany(fetch = FetchType.LAZY,
+			cascade = {
+					CascadeType.PERSIST,
+					CascadeType.MERGE
+			},
+			mappedBy = "skills")
+	 Set<Person> persons = new HashSet<>();
 }

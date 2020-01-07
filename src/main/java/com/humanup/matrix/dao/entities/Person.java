@@ -1,107 +1,48 @@
 package com.humanup.matrix.dao.entities;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString(of= {"id","firstName","lastName","mailAdresses","birthDate","skills"})
 @Entity
-public class Person{
-
+@Table(name = "person")
+public class Person implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", updatable = false, nullable = false)
-  private Long id;
-  private String firstName;
-  private String lastName;
-  private String mailAdresses;
-  private Date birthDate;
+  Long id;
+  @Column(name="first_name")
+  String firstName;
+  @Column(name="last_name")
+  String lastName;
+  @Column(name="mail_adresses")
+  String mailAdresses;
+  @Column(name="birth_date")
+  Date birthDate;
 
   @ManyToOne
-  @JoinColumn(name = "profileId")
-  private Profile profile;
+  @JoinColumn(name = "profile_id")
+   Profile profile;
 
-  protected Person() {}
-
-  public Person(String firstName, String lastName, String mailAdresses,Date birthDate, Profile profile) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.mailAdresses = mailAdresses;
-    this.birthDate = birthDate;
-    this.profile = profile;
-  }
-
-  @Override
-  public String toString() {
-    return String.format(
-        "Customer[id=%d, firstName='%s', lastName='%s']",
-        id, firstName, lastName);
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public String getMailAdresses() {
-    return mailAdresses;
-  }
-
-  public Date getBirthDate() {
-    return birthDate;
-  }
-
-  public Profile getProfile() {
-        return this.profile;
-    }
-
-
-  public static class Builder{
-          private Long id;
-          private String firstName;
-          private String lastName;
-          private String mailAdresses;
-          private Date birthDate;
-          private Profile profile;
-
-           public Builder() {
-           }
-
-      public Builder setId(Long id) {
-          this.id = id;
-          return this;
-      }
-           public Builder setFirstName(String firstName) {
-             this.firstName = firstName;
-             return this;
-           }
-
-           public Builder setLastName(String lastName) {
-             this.lastName = lastName;
-             return this;
-           }
-
-           public Builder setMailAdresses(String mailAdresses) {
-             this.mailAdresses = mailAdresses;
-             return this;
-           }
-
-           public Builder setBirthDate(Date birthDate) {
-             this.birthDate = birthDate;
-             return this;
-           }
-
-           public Builder setProfile(Profile profile) {
-            this.profile = profile;
-            return this;
-            }
-           public Person build(){
-             return new Person( firstName,  lastName,  mailAdresses, birthDate,profile);
-           }
-         }
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "person_skill",
+            joinColumns = { @JoinColumn(name = "person_id") },
+            inverseJoinColumns = { @JoinColumn(name = "skill_id") })
+     Set<Skill> skills = new HashSet<>();
 }

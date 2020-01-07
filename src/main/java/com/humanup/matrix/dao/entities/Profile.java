@@ -1,72 +1,31 @@
 package com.humanup.matrix.dao.entities;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@ToString(of= {"profileId","profileTitle","profileDescription","personList"})
 @Entity
 @Table(name = "profile_person")
-public class Profile {
-
+public class Profile implements Serializable {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long profileId;
-    private String profileTitle;
-    private String profileDescription;
-
-
-
-    @OneToMany(mappedBy="profile",fetch=FetchType.LAZY)
-    private List<Person> personList;
-
-    protected Profile() {}
-
-    public Profile(String profileTitle, String profileDescription) {
-        this.profileTitle = profileTitle;
-        this.profileDescription = profileDescription;
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-                "Customer[id=%d, firstName='%s', lastName='%s']",
-                profileId, profileTitle, profileDescription);
-    }
-
-
-    public Long getId() {
-        return this.profileId;
-    }
-    public String getProfileTitle() {
-        return this.profileTitle;
-    }
-    public String getProfileDescription() {
-        return this.profileDescription;
-    }
-    public List<Person> getPersonList() {
-        return personList;
-    }
-
-    public static class Builder{
-
-        private String profileTitle;
-        private String profileDescription;
-
-        public Builder() {
-        }
-
-        public Builder setProfileTitle(String profileTitle) {
-            this.profileTitle = profileTitle;
-            return this;
-        }
-
-        public Builder setProfileDescription(String profileDescription) {
-            this.profileDescription = profileDescription;
-            return this;
-        }
-
-        public Profile build(){
-            return new Profile( profileTitle,  profileDescription);
-        }
-    }
+    @Column(name="profile_id")
+     Long profileId;
+    @Column(name="profile_title")
+     String profileTitle;
+    @Column(name="profile_description")
+     String profileDescription;
+    @OneToMany(mappedBy="profile",fetch=FetchType.EAGER)
+     List<Person> personList;
 
 }

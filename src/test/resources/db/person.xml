@@ -1,0 +1,68 @@
+<dataset>
+    <profile profile_title="Developpeur JAVA Junior" profile_description="Developpeur JAVA Junior 1ans"/>
+    <profile profile_title="Developpeur JAVA Confirmer" profile_description="Developpeur JAVA Confirmer 3ans"/>
+    <profile profile_title="Developpeur JAVA Senior" profile_description="Developpeur JAVA Junior 5ans"/>
+    <profile profile_title="Developpeur REACT Junior" profile_description="Developpeur REACT Senior 1ans"/>
+    <profile profile_title="Developpeur REACT Confirmer" profile_description="Developpeur REACT Confirmer 3ans"/>
+    <profile profile_title="Developpeur REACT Senior" profile_description="Developpeur REACT Senior 5ans"/>
+    <person first_name="HAMZA" last_name="BENDAROUACH" mail_adresses="hbenderouach@sqli.com" birth_date="1992-05-14" profile_id="1"/>
+    <person first_name="Yassine" last_name="EL OUARDI" mail_adresses="yelouardi@sqli.com" birth_date="1986-09-14" profile_id="1"/>
+    <person first_name="Khalil" last_name="KOUISS" mail_adresses="kkouis@sqli.com" birth_date="1993-07-1" profile_id="1"/>
+    <person first_name="Khalid" last_name="LABID" mail_adresses="kladib@sqli.com" birth_date="1976-03-10" profile_id="1"/>
+    <person first_name="User1" last_name="Last User 1" mail_adresses="user1@sqli.com" birth_date="1986-09-14" profile_id="2"/>
+    <person first_name="User2" last_name="Last User 2" mail_adresses="user2@sqli.com" birth_date="1986-09-14" profile_id="2"/>
+    <person first_name="User3" last_name="Last User 3" mail_adresses="user3@sqli.com" birth_date="1986-09-14" profile_id="2"/>
+    <person first_name="User4" last_name="Last User 4" mail_adresses="user4@sqli.com" birth_date="1986-09-14" profile_id="2"/>
+    <person first_name="User5" last_name="Last User 5" mail_adresses="user5@sqli.com" birth_date="1986-09-14" profile_id="3"/>
+    <person first_name="User6" last_name="Last User 6" mail_adresses="user6@sqli.com" birth_date="1986-09-14" profile_id="3"/>
+    <person first_name="User7" last_name="Last User 7" mail_adresses="user7@sqli.com" birth_date="1986-09-14" profile_id="3"/>
+    <person first_name="User8" last_name="Last User 8" mail_adresses="user8@sqli.com" birth_date="1986-09-14" profile_id="4"/>
+    <person first_name="User9" last_name="Last User 9" mail_adresses="user9@sqli.com" birth_date="1986-09-14" profile_id="4"/>
+    <person first_name="User10" last_name="Last User 10" mail_adresses="user10@sqli.com" birth_date="1986-09-14" profile_id="5"/>
+    <person first_name="User11" last_name="Last User 11" mail_adresses="user11@sqli.com" birth_date="1986-09-14" profile_id="5"/>
+    <person first_name="User12" last_name="Last User 12" mail_adresses="user12@sqli.com" birth_date="1986-09-14" profile_id="5"/>
+    <person first_name="User13" last_name="Last User 13" mail_adresses="user13@sqli.com" birth_date="1986-09-14" profile_id="6"/>
+    <person first_name="User14" last_name="Last User 14" mail_adresses="user14@sqli.com" birth_date="1986-09-14" profile_id="6"/>
+    <type_skills title_skill="TECHNIQUE" />
+    <type_skills title_skill="FONCTIONNEL" />
+    <skill libelle="JAVA" description="DEV JAVA" type_id="1"/>
+    <skill libelle="C++" description="DEV C++" type_id="1"/>
+    <skill libelle="PHP" description="DEV PHP" type_id="1"/>
+    <skill libelle="SPRING" description="DEV SPRING" type_id="1"/>
+    <skill libelle="REACT" description="DEV REACT" type_id="1"/>
+    <skill libelle="ANGULAR" description="DEV ANGULAR" type_id="1"/>
+    <skill libelle="SCRUM" description="SCRUM MASTER" type_id="2"/>
+    <skill libelle="MANAGEMENT" description="MANAGEMENT PO" type_id="2"/>
+    <skill libelle="COMMUNICATION" description="COMMUNICATION MANAGER" type_id="2"/>
+    <skill libelle="MOTIVATION" description="MOTIVATION" type_id="2"/>
+    <person_skill person_id="1" skill_id="1" />
+    <person_skill person_id="1" skill_id="2" />
+    <person_skill person_id="1" skill_id="3" />
+    <person_skill person_id="1" skill_id="4" />
+    <person_skill person_id="1" skill_id="5" />
+    <person_skill person_id="2" skill_id="6" />
+    <person_skill person_id="2" skill_id="7" />
+    <person_skill person_id="2" skill_id="8" />
+    <person_skill person_id="2" skill_id="9" />
+    <person_skill person_id="2" skill_id="10" />
+    <person_skill person_id="3" skill_id="1" />
+    <person_skill person_id="3" skill_id="2" />
+    <person_skill person_id="3" skill_id="3" />
+    <person_skill person_id="3" skill_id="4" />
+    <person_skill person_id="3" skill_id="5" />
+    <person_skill person_id="4" skill_id="6" />
+    <person_skill person_id="4" skill_id="7" />
+    <person_skill person_id="4" skill_id="8" />
+    <person_skill person_id="4" skill_id="9" />
+    <person_skill person_id="4" skill_id="10" />
+    <person_skill person_id="5" skill_id="1" />
+    <person_skill person_id="5" skill_id="2" />
+    <person_skill person_id="5" skill_id="3" />
+    <person_skill person_id="5" skill_id="4" />
+    <person_skill person_id="5" skill_id="5" />
+    <person_skill person_id="6" skill_id="6" />
+    <person_skill person_id="6" skill_id="7" />
+    <person_skill person_id="6" skill_id="8" />
+    <person_skill person_id="6" skill_id="9" />
+    <person_skill person_id="6" skill_id="10" />
+</dataset>

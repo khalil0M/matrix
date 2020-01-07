@@ -42,7 +42,7 @@ Feature: Person End Point
     Given  path 'person'
     And request { firstName: 'ETS' ,lastName: 'OOKDn' ,mailAdresses: 'yelo@gm.com' ,birthDate: '1973-11-17' ,profile: 'Business Analyste Junior' }
     When method POST
-    Then status 201 || 302
+    Then status 201
     And def person = response
 
     Given path 'person'

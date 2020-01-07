@@ -33,6 +33,19 @@ public class PersonController {
     return ResponseEntity.status(HttpStatus.CREATED).body(person);
   }
 
+  @Operation(summary = "Create Skills", description = " Create new kills by email", tags = { "person" })
+  @RequestMapping(value="/person/skills", method=RequestMethod.POST,consumes={ "application/json"})
+  @ResponseBody
+  public ResponseEntity addPersonSkills(@RequestParam(value="email", defaultValue="robot@sqli.com") String email,@RequestBody List<Integer> skills ) throws ProfileException {
+    Optional<Object> findPerson = Optional.ofNullable(personBS.addSkillsPerson(skills,email));
+
+    if(findPerson.isEmpty()){
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Forbidden Skills Information");
+    }
+    return ResponseEntity.status(HttpStatus.CREATED).body(findPerson.get());
+  }
+
+
   @Operation(summary = "Find person by email", description = "Person search by %email% format", tags = { "person" })
   @RequestMapping(value="/person", method=RequestMethod.GET)
   @ResponseBody
