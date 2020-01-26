@@ -19,7 +19,7 @@ import java.util.Set;
 @Table(name = "skill")
 public class Skill implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	 Long id;
 	@Column(name="libelle")
 	 String libelle;

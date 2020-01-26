@@ -1,11 +1,18 @@
 package com.humanup.matrix.bs.impl;
 
 import com.humanup.matrix.bs.SkillBS;
+import com.humanup.matrix.bs.impl.sender.RabbitMQProfileSender;
+import com.humanup.matrix.bs.impl.sender.RabbitMQSkillSender;
 import com.humanup.matrix.dao.SkillDAO;
 import com.humanup.matrix.dao.TypeSkillsDAO;
+import com.humanup.matrix.dao.entities.Profile;
 import com.humanup.matrix.dao.entities.Skill;
 import com.humanup.matrix.dao.entities.TypeSkills;
+import com.humanup.matrix.vo.ProfileVO;
 import com.humanup.matrix.vo.SkillVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class SkillBSImpl implements SkillBS {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SkillBSImpl.class);
 
     @Autowired
     private SkillDAO skillDAO;
@@ -24,17 +32,16 @@ public class SkillBSImpl implements SkillBS {
     @Autowired
     private TypeSkillsDAO typeSkillsDAO;
 
+    @Autowired
+    RabbitMQSkillSender rabbitMQSkillSender;
+
+
     @Override
     @Transactional(transactionManager="transactionManagerWrite")
     public boolean createSkill(SkillVO skillVO) {
-        TypeSkills typeSkills = typeSkillsDAO.findByTitleSkill(skillVO.getTypeSkills());
-
-        Skill skillToSave =  Skill.builder()
-                .libelle(skillVO.getLibelle())
-                .description(skillVO.getDescription())
-                .typeSkills(typeSkills)
-                .build();
-        return skillDAO.save(skillToSave) != null;
+        if(null==skillVO)return false;
+        rabbitMQSkillSender.send(skillVO);
+        return  true;
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.humanup.matrix.bs.impl;
 
 import com.humanup.matrix.bs.PersonBS;
+import com.humanup.matrix.bs.impl.sender.RabbitMQPersonSender;
 import com.humanup.matrix.dao.PersonDAO;
 import com.humanup.matrix.dao.ProfileDAO;
 import com.humanup.matrix.dao.SkillDAO;
-import com.humanup.matrix.dao.TypeSkillsDAO;
 import com.humanup.matrix.dao.entities.Person;
 import com.humanup.matrix.dao.entities.Profile;
 import com.humanup.matrix.dao.entities.Skill;
@@ -12,15 +12,12 @@ import com.humanup.matrix.dao.entities.TypeSkills;
 import com.humanup.matrix.exceptions.ProfileException;
 import com.humanup.matrix.vo.PersonVO;
 import com.humanup.matrix.vo.SkillVO;
-import com.humanup.matrix.vo.TypeSkillsVO;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -32,6 +29,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class PersonBSImpl implements PersonBS {
+  private static final Logger LOGGER = LoggerFactory.getLogger(PersonBSImpl.class);
 
   @Autowired
   private PersonDAO personDAO;
@@ -42,23 +40,15 @@ public class PersonBSImpl implements PersonBS {
   @Autowired
   private SkillDAO skillDAO;
 
+  @Autowired
+  RabbitMQPersonSender rabbitMQPersonSender;
+
   @Override
   @Transactional(transactionManager="transactionManagerWrite",rollbackFor = ProfileException.class)
-  public boolean createPerson(PersonVO personVO) throws ProfileException {
-    Profile profile = profileDAO.findByProfileTitle(personVO.getProfile());
-    String email =  personVO.getMailAdresses();
-
-    if(null == profile || null == email || StringUtils.isEmpty(email)){
-      throw new ProfileException();
-    }
-    Person personToSave = Person.builder()
-          .firstName(personVO.getFirstName())
-          .lastName(personVO.getLastName())
-          .mailAdresses(email)
-          .birthDate(personVO.getBirthDate())
-           .profile(profile)
-          .build();
-    return  personDAO.save(personToSave)!=null;
+  public boolean createPerson(PersonVO personVO) {
+    if(null==personVO)return false;
+    rabbitMQPersonSender.send(personVO);
+    return  true;
   }
 
   @Override

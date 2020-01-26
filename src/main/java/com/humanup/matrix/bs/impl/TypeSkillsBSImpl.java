@@ -2,14 +2,19 @@ package com.humanup.matrix.bs.impl;
 
 import com.humanup.matrix.bs.ProfileBS;
 import com.humanup.matrix.bs.TypeSkillsBS;
+import com.humanup.matrix.bs.impl.sender.RabbitMQSkillSender;
+import com.humanup.matrix.bs.impl.sender.RabbitMQTypeSkillSender;
 import com.humanup.matrix.dao.ProfileDAO;
 import com.humanup.matrix.dao.TypeSkillsDAO;
 import com.humanup.matrix.dao.entities.Profile;
+import com.humanup.matrix.dao.entities.Skill;
 import com.humanup.matrix.dao.entities.TypeSkills;
 import com.humanup.matrix.vo.PersonVO;
 import com.humanup.matrix.vo.ProfileVO;
+import com.humanup.matrix.vo.SkillVO;
 import com.humanup.matrix.vo.TypeSkillsVO;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +30,16 @@ public class TypeSkillsBSImpl implements TypeSkillsBS {
 	@Autowired
 	private TypeSkillsDAO typeSkillsDAO;
 
+	@Autowired
+	RabbitMQTypeSkillSender rabbitMQTypeSkillSender;
+
+
 	@Override
 	@Transactional(transactionManager="transactionManagerWrite")
 	public boolean createTypeSkills(TypeSkillsVO typeSkillsVO) {
-		TypeSkills typeToSave =  TypeSkills.builder()
-				.titleSkill(typeSkillsVO.getTitleSkill())
-				.build();
-		return typeSkillsDAO.save(typeToSave) != null;
+		if(null==typeSkillsVO)return false;
+		rabbitMQTypeSkillSender.send(typeSkillsVO);
+		return  true;
 
 	}
 

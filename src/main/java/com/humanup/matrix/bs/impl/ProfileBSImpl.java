@@ -1,10 +1,17 @@
 package com.humanup.matrix.bs.impl;
 
 import com.humanup.matrix.bs.ProfileBS;
+import com.humanup.matrix.bs.impl.sender.RabbitMQPersonSender;
+import com.humanup.matrix.bs.impl.sender.RabbitMQProfileSender;
 import com.humanup.matrix.dao.ProfileDAO;
+import com.humanup.matrix.dao.entities.Person;
 import com.humanup.matrix.dao.entities.Profile;
 import com.humanup.matrix.vo.PersonVO;
 import com.humanup.matrix.vo.ProfileVO;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,18 +24,19 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(readOnly = true)
 public class ProfileBSImpl implements ProfileBS {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProfileBSImpl.class);
 
     @Autowired
     private ProfileDAO profileDAO;
+    @Autowired
+    RabbitMQProfileSender rabbitMQProfileSender;
 
     @Override
     @Transactional(transactionManager="transactionManagerWrite")
     public boolean createProfile(ProfileVO profileVO) {
-        Profile profileToSave = Profile.builder()
-                .profileTitle(profileVO.getProfileTitle())
-                .profileDescription(profileVO.getProfileDescription())
-                .build();
-        return  profileDAO.save(profileToSave)!=null;
+        if(null==profileVO)return false;
+        rabbitMQProfileSender.send(profileVO);
+        return  true;
     }
 
     @Override

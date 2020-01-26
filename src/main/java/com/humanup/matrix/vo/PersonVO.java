@@ -3,6 +3,7 @@ package com.humanup.matrix.vo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(of= {"firstName","lastName","mailAdresses","birthDate","profile","skillVOList"})
-public class PersonVO {
+public class PersonVO implements Serializable {
      String firstName;
      String lastName;
      String mailAdresses;

@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "profile_person")
 public class Profile implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="profile_id")
      Long profileId;
     @Column(name="profile_title")

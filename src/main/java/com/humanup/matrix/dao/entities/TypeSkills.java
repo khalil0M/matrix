@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "type_skills")
 public class TypeSkills implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="type_id")
 	 Long typeId;
 	@Column(name="title_skill")
