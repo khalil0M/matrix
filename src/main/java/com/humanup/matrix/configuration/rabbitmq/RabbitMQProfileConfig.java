@@ -1,4 +1,5 @@
 package com.humanup.matrix.configuration.rabbitmq;
+
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -13,39 +14,39 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQProfileConfig {
 
-    @Value("${profile.queue.name}")
-    String queueName;
+  @Value("${profile.queue.name}")
+  String queueName;
 
-    @Value("${profile.exchange.name}")
-    String exchange;
+  @Value("${profile.exchange.name}")
+  String exchange;
 
-    @Value("${profile.routing.key}")
-    String routingkey;
+  @Value("${profile.routing.key}")
+  String routingkey;
 
-    @Bean
-    Queue queue() {
-        return new Queue(queueName, true, false, true);
-    }
+  @Bean
+  Queue queue() {
+    return new Queue(queueName, true, false, true);
+  }
 
-    @Bean
-    DirectExchange exchange() {
-        return new DirectExchange(exchange);
-    }
+  @Bean
+  DirectExchange exchange() {
+    return new DirectExchange(exchange);
+  }
 
-    @Bean
-    Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingkey);
-    }
+  @Bean
+  Binding binding(Queue queue, DirectExchange exchange) {
+    return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+  }
 
+  @Bean
+  public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
+    return new Jackson2JsonMessageConverter();
+  }
 
-    @Bean
-    public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-    @Bean
-    public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
-        final var rabbitTemplate = new RabbitTemplate(connectionFactory);
-        rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
-        return rabbitTemplate;
-    }
+  @Bean
+  public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
+    final var rabbitTemplate = new RabbitTemplate(connectionFactory);
+    rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());
+    return rabbitTemplate;
+  }
 }

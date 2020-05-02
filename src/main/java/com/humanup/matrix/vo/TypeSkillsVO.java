@@ -1,17 +1,16 @@
 package com.humanup.matrix.vo;
 
+import java.io.Serializable;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.Serializable;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-@ToString(of= {"titleSkill"})
+@ToString(of = {"titleSkill"})
 public class TypeSkillsVO implements Serializable {
-     String titleSkill;
+  String titleSkill;
 }

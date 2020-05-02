@@ -6,5 +6,4 @@ import org.junit.runner.RunWith;
 
 @RunWith(Karate.class)
 @CucumberOptions(plugin = {"pretty", "html:target/cucumber"})
-public class KarateUnitTest {
-}
+public class KarateUnitTest {}
