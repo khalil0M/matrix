@@ -1,5 +1,7 @@
 package com.humanup.matrix.bs.impl;
 
+import com.humanup.matrix.aop.dto.PersonException;
+import com.humanup.matrix.aop.dto.SkillException;
 import com.humanup.matrix.bs.PersonBS;
 import com.humanup.matrix.bs.impl.sender.RabbitMQPersonSender;
 import com.humanup.matrix.dao.PersonDAO;
@@ -8,7 +10,6 @@ import com.humanup.matrix.dao.SkillDAO;
 import com.humanup.matrix.dao.entities.Person;
 import com.humanup.matrix.dao.entities.Skill;
 import com.humanup.matrix.dao.entities.TypeSkills;
-import com.humanup.matrix.exceptions.ProfileException;
 import com.humanup.matrix.vo.PersonVO;
 import com.humanup.matrix.vo.SkillVO;
 import java.util.List;
@@ -16,8 +17,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 public class PersonBSImpl implements PersonBS {
-  private static final Logger LOGGER = LoggerFactory.getLogger(PersonBSImpl.class);
 
   @Autowired private PersonDAO personDAO;
 
@@ -38,21 +36,19 @@ public class PersonBSImpl implements PersonBS {
   @Override
   @Transactional(
       transactionManager = "transactionManagerWrite",
-      rollbackFor = ProfileException.class)
-  public boolean createPerson(PersonVO personVO) {
-    if (null == personVO) return false;
+      rollbackFor = PersonException.class)
+  public boolean createPerson(PersonVO personVO) throws PersonException {
+    if (null == personVO) throw new PersonException();
     rabbitMQPersonSender.send(personVO);
     return true;
   }
 
   @Override
-  @Transactional(
-      transactionManager = "transactionManagerWrite",
-      rollbackFor = ProfileException.class)
-  public boolean addSkillsPerson(List<Integer> skills, String email) throws ProfileException {
+  @Transactional(transactionManager = "transactionManagerWrite", rollbackFor = SkillException.class)
+  public boolean addSkillsPerson(List<Integer> skills, String email) throws SkillException {
     Person personToUpdate = personDAO.findByMailAdresses(email);
     if (null == personToUpdate || null == email || StringUtils.isEmpty(email)) {
-      throw new ProfileException();
+      throw new SkillException();
     }
     Set<Skill> collected =
         skills.stream().map(id -> skillDAO.findById(id)).collect(Collectors.toSet());

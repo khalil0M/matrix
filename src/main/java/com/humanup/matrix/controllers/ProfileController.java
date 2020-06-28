@@ -1,5 +1,6 @@
 package com.humanup.matrix.controllers;
 
+import com.humanup.matrix.aop.dto.ProfileException;
 import com.humanup.matrix.bs.ProfileBS;
 import com.humanup.matrix.vo.ProfileVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +24,7 @@ public class ProfileController {
       method = RequestMethod.POST,
       consumes = {"application/json"})
   @ResponseBody
-  public ResponseEntity createProfile(@RequestBody ProfileVO profile) {
+  public ResponseEntity createProfile(@RequestBody ProfileVO profile) throws ProfileException {
     Optional<Object> findProfile =
         Optional.ofNullable(profileBS.findProfileByTitle(profile.getProfileTitle()));
 

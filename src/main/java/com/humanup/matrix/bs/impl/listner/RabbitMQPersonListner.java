@@ -45,4 +45,14 @@ public class RabbitMQPersonListner {
       LOGGER.info("Error  message... {} ", ex.getMessage(), ex);
     }
   }
+
+  @RabbitListener(queues = {"${person.queue.name}"})
+  public void receivePersonSkill(Person person) {
+    try {
+      LOGGER.info("Receive  message... {} ", person.toString());
+      personDAO.save(person);
+    } catch (Exception ex) {
+      LOGGER.info("Error  message... {} ", ex.getMessage(), ex);
+    }
+  }
 }

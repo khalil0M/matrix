@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 @Builder
 @ToString(of = {"profileTitle", "profileDescription", "countPerson"})
 public class ProfileVO implements Serializable {

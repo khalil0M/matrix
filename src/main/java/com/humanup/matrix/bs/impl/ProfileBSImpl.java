@@ -1,5 +1,6 @@
 package com.humanup.matrix.bs.impl;
 
+import com.humanup.matrix.aop.dto.ProfileException;
 import com.humanup.matrix.bs.ProfileBS;
 import com.humanup.matrix.bs.impl.sender.RabbitMQProfileSender;
 import com.humanup.matrix.dao.ProfileDAO;
@@ -23,9 +24,11 @@ public class ProfileBSImpl implements ProfileBS {
   @Autowired RabbitMQProfileSender rabbitMQProfileSender;
 
   @Override
-  @Transactional(transactionManager = "transactionManagerWrite")
-  public boolean createProfile(ProfileVO profileVO) {
-    if (null == profileVO) return false;
+  @Transactional(
+      transactionManager = "transactionManagerWrite",
+      rollbackFor = ProfileException.class)
+  public boolean createProfile(ProfileVO profileVO) throws ProfileException {
+    if (null == profileVO) throw new ProfileException();
     rabbitMQProfileSender.send(profileVO);
     return true;
   }

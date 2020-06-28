@@ -15,27 +15,27 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQSkillConfig {
 
   @Value("${skill.queue.name}")
-  String queueName;
+  String queueSkill;
 
   @Value("${skill.exchange.name}")
-  String exchange;
+  String exchangeSkill;
 
   @Value("${skill.routing.key}")
-  String routingkey;
+  String routingkeySkill;
 
   @Bean
   Queue queue() {
-    return new Queue(queueName, true, false, true);
+    return new Queue(queueSkill, false);
   }
 
   @Bean
   DirectExchange exchange() {
-    return new DirectExchange(exchange);
+    return new DirectExchange(exchangeSkill);
   }
 
   @Bean
   Binding binding(Queue queue, DirectExchange exchange) {
-    return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+    return BindingBuilder.bind(queue).to(exchange).with(routingkeySkill);
   }
 
   @Bean

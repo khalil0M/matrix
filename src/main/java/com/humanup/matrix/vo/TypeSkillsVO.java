@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
 @ToString(of = {"titleSkill"})
 public class TypeSkillsVO implements Serializable {
   String titleSkill;

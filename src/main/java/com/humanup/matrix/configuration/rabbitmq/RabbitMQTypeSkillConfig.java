@@ -15,27 +15,27 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQTypeSkillConfig {
 
   @Value("${typeskill.queue.name}")
-  String queueName;
+  String queueTypeSkill;
 
   @Value("${typeskill.exchange.name}")
-  String exchange;
+  String exchangeTypeSkill;
 
   @Value("${typeskill.routing.key}")
-  String routingkey;
+  String routingkeyTypeSkill;
 
   @Bean
   Queue queue() {
-    return new Queue(queueName, true, false, true);
+    return new Queue(queueTypeSkill, false);
   }
 
   @Bean
   DirectExchange exchange() {
-    return new DirectExchange(exchange);
+    return new DirectExchange(exchangeTypeSkill);
   }
 
   @Bean
   Binding binding(Queue queue, DirectExchange exchange) {
-    return BindingBuilder.bind(queue).to(exchange).with(routingkey);
+    return BindingBuilder.bind(queue).to(exchange).with(routingkeyTypeSkill);
   }
 
   @Bean

@@ -1,5 +1,6 @@
 package com.humanup.matrix.bs.impl;
 
+import com.humanup.matrix.aop.dto.TypeSkillException;
 import com.humanup.matrix.bs.TypeSkillsBS;
 import com.humanup.matrix.bs.impl.sender.RabbitMQTypeSkillSender;
 import com.humanup.matrix.dao.TypeSkillsDAO;
@@ -21,9 +22,11 @@ public class TypeSkillsBSImpl implements TypeSkillsBS {
   @Autowired RabbitMQTypeSkillSender rabbitMQTypeSkillSender;
 
   @Override
-  @Transactional(transactionManager = "transactionManagerWrite")
-  public boolean createTypeSkills(TypeSkillsVO typeSkillsVO) {
-    if (null == typeSkillsVO) return false;
+  @Transactional(
+      transactionManager = "transactionManagerWrite",
+      rollbackFor = TypeSkillException.class)
+  public boolean createTypeSkills(TypeSkillsVO typeSkillsVO) throws TypeSkillException {
+    if (null == typeSkillsVO) throw new TypeSkillException();
     rabbitMQTypeSkillSender.send(typeSkillsVO);
     return true;
   }

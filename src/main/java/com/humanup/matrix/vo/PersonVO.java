@@ -11,7 +11,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
 @ToString(of = {"firstName", "lastName", "mailAdresses", "birthDate", "profile", "skillVOList"})
 public class PersonVO implements Serializable {
   String firstName;

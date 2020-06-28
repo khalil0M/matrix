@@ -1,5 +1,6 @@
 package com.humanup.matrix.controllers;
 
+import com.humanup.matrix.aop.dto.SkillException;
 import com.humanup.matrix.bs.SkillBS;
 import com.humanup.matrix.vo.SkillVO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +29,7 @@ public class SkillController {
       method = RequestMethod.POST,
       consumes = {"application/json"})
   @ResponseBody
-  public ResponseEntity createSkill(@RequestBody SkillVO skill) {
+  public ResponseEntity createSkill(@RequestBody SkillVO skill) throws SkillException {
     Optional<Object> findskill =
         Optional.ofNullable(skillBS.findSkillByLibelle(skill.getLibelle()));
 

@@ -1,5 +1,6 @@
 package com.humanup.matrix.bs.impl;
 
+import com.humanup.matrix.aop.dto.SkillException;
 import com.humanup.matrix.bs.SkillBS;
 import com.humanup.matrix.bs.impl.sender.RabbitMQSkillSender;
 import com.humanup.matrix.dao.SkillDAO;
@@ -28,9 +29,9 @@ public class SkillBSImpl implements SkillBS {
   @Autowired RabbitMQSkillSender rabbitMQSkillSender;
 
   @Override
-  @Transactional(transactionManager = "transactionManagerWrite")
-  public boolean createSkill(SkillVO skillVO) {
-    if (null == skillVO) return false;
+  @Transactional(transactionManager = "transactionManagerWrite", rollbackFor = SkillException.class)
+  public boolean createSkill(SkillVO skillVO) throws SkillException {
+    if (null == skillVO) throw new SkillException();
     rabbitMQSkillSender.send(skillVO);
     return true;
   }
